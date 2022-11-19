@@ -1,62 +1,41 @@
-import { Injectable } from "@nestjs/common";
-import { Patient } from "@prisma/client";
-import { PrismaService } from "../prisma/prisma.service";
+import { BadRequestException, HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { CreateRecordScheduleDto } from "./dto/create-record-schedule-dto";
 import { ListScheduleEntitiesDto } from "./dto/list-schedule-entities-dto";
 import { UpdateRecordScheduleDto } from "./dto/update-record-schedule-dto";
+import { ScheduleRepository } from "./schedule.repository";
 
 @Injectable()
 export class ScheduleService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private scheduleRepository: ScheduleRepository) {}
 
   async getRecords(listScheduleEntitiesDto: ListScheduleEntitiesDto) {
-    const { date, timeFrom, timeTo, isFree, doctorId, patientId } = listScheduleEntitiesDto;
-
-    const filteredRecords = await this.prisma.schedule.findMany({
-      where: {
-        AND: [
-          { date },
-          { time_from: timeFrom },
-          { time_to: timeTo },
-          { is_free: isFree },
-          { doctor_id: doctorId },
-          { patient_id: patientId },
-        ],
-      },
-    });
-
-    return filteredRecords;
+    throw new Error("adqweq");
+    return await this.scheduleRepository.findMany(listScheduleEntitiesDto);
   }
 
   async createRecord(createRecordScheduleDto: CreateRecordScheduleDto) {
-    const { scheduleId, patientId, type } = createRecordScheduleDto;
-    const scheduleRecord = await this.prisma.schedule.findUnique({ where: { id: scheduleId } });
+    const { scheduleId } = createRecordScheduleDto;
+    const scheduleRecord = await this.scheduleRepository.findOne(scheduleId);
 
     if (!scheduleRecord.is_free) {
-      throw new Error("Запись уже занята.");
+      throw new HttpException({ message: "Запись уже занята." }, HttpStatus.BAD_REQUEST);
     }
 
-    const newRecord = await this.prisma.schedule.update({
-      where: { id: scheduleId },
-      data: { is_free: false, type, patient_id: patientId },
-    });
-
-    return newRecord;
+    return await this.scheduleRepository.createOne(createRecordScheduleDto);
   }
 
   async updateRecord(updateRecordScheduleDto: UpdateRecordScheduleDto) {
-    const { oldScheduleId, newScheduleId, patientId, type } = updateRecordScheduleDto;
+    const { oldScheduleId, newScheduleId } = updateRecordScheduleDto;
 
-    await this.prisma.schedule.update({
-      where: { id: oldScheduleId },
-      data: { is_free: true, type: null, patient_id: null },
-    });
+    const checkOldRecord = await this.scheduleRepository.findOne(oldScheduleId);
+    const checkNewRecord = await this.scheduleRepository.findOne(newScheduleId);
+    if (!checkOldRecord || !checkNewRecord) {
+      throw new HttpException(
+        { message: "Cann't find necessary records." },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
 
-    const newRecord = await this.prisma.schedule.update({
-      where: { id: newScheduleId },
-      data: { is_free: false, type, patient_id: patientId },
-    });
-
-    return newRecord;
+    return await this.scheduleRepository.updateOne(updateRecordScheduleDto);
   }
 }

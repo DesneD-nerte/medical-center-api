@@ -9,14 +9,18 @@ export class ScheduleController {
   constructor(private readonly scheduleService: ScheduleService) {}
 
   @Get()
+  @UsePipes(new ValidationPipe({ whitelist: true, transform: true, skipMissingProperties: true }))
   async getRecords(@Query() query: ListScheduleEntitiesDto) {
-    console.log(query);
+    // try {
     return await this.scheduleService.getRecords(query);
+    // } catch (err) {
+    //   console.log(123);
+    // }
   }
 
   @Post()
+  @UsePipes(new ValidationPipe({ whitelist: true, transform: true }))
   async createRecord(@Body() createRecordScheduleDto: CreateRecordScheduleDto) {
-    console.log(createRecordScheduleDto);
     // try {
     return await this.scheduleService.createRecord(createRecordScheduleDto);
     // } catch(err) {
@@ -27,6 +31,7 @@ export class ScheduleController {
   }
 
   @Put()
+  @UsePipes(new ValidationPipe({ whitelist: true, transform: true }))
   async updateRecord(@Body() updateRecordScheduleDto: UpdateRecordScheduleDto) {
     return await this.scheduleService.updateRecord(updateRecordScheduleDto);
   }
