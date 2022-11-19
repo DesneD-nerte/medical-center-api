@@ -11,23 +11,13 @@ export class ScheduleController {
   @Get()
   @UsePipes(new ValidationPipe({ whitelist: true, transform: true, skipMissingProperties: true }))
   async getRecords(@Query() query: ListScheduleEntitiesDto) {
-    // try {
     return await this.scheduleService.getRecords(query);
-    // } catch (err) {
-    //   console.log(123);
-    // }
   }
 
   @Post()
   @UsePipes(new ValidationPipe({ whitelist: true, transform: true }))
   async createRecord(@Body() createRecordScheduleDto: CreateRecordScheduleDto) {
-    // try {
     return await this.scheduleService.createRecord(createRecordScheduleDto);
-    // } catch(err) {
-    // 	throw new HttpException({
-
-    // 	})
-    // }
   }
 
   @Put()
