@@ -1,5 +1,6 @@
-import { Body, Controller, Get, Post, Put } from "@nestjs/common";
+import { Body, Controller, Get, Post, Put, Query, UsePipes, ValidationPipe } from "@nestjs/common";
 import { CreateRecordScheduleDto } from "./dto/create-record-schedule-dto";
+import { ListScheduleEntitiesDto } from "./dto/list-schedule-entities-dto";
 import { UpdateRecordScheduleDto } from "./dto/update-record-schedule-dto";
 import { ScheduleService } from "./schedule.service";
 
@@ -8,8 +9,9 @@ export class ScheduleController {
   constructor(private readonly scheduleService: ScheduleService) {}
 
   @Get()
-  async getRecords() {
-    return await this.getRecords();
+  async getRecords(@Query() query: ListScheduleEntitiesDto) {
+    console.log(query);
+    return await this.scheduleService.getRecords(query);
   }
 
   @Post()
