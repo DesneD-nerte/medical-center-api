@@ -1,22 +1,11 @@
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
-
+## SQL:
 ```bash
-$ npm install
+Файл развертывания: ./prisma/mysql/medical-center.sql
+Строка подключения: .env
 ```
 
 ## Running the app
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
 $ npm run start:dev
-
-# production mode
-$ npm run start:prod
 ```
