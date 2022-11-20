@@ -9,6 +9,7 @@ import { ScheduleModule as NestScheduleModule } from "@nestjs/schedule";
 import { TasksModule } from "./tasks/tasks.module";
 import { MailerModule } from "@nestjs-modules/mailer";
 import { HandlebarsAdapter } from "@nestjs-modules/mailer/dist/adapters/handlebars.adapter";
+import { EmailModule } from "./notifications/email/email.module";
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { HandlebarsAdapter } from "@nestjs-modules/mailer/dist/adapters/handleba
     PrismaModule,
     NestScheduleModule.forRoot(),
     TasksModule,
+    EmailModule,
     MailerModule.forRoot({
       //It is not a real password, it is specific app password
       transport: "smtps://ershov.sasha2013@gmail.com:ehkqqnhebbgjeukz@smtp.gmail.com",

@@ -1,11 +1,10 @@
 import { Module } from "@nestjs/common";
-import { TasksController } from "./tasks.controller";
-import { TasksRepository } from "./tasks.repository";
+import { EmailModule } from "../notifications/email/email.module";
 import { TasksService } from "./tasks.service";
 
 @Module({
-  imports: [],
-  controllers: [TasksController],
-  providers: [TasksService, TasksRepository],
+  imports: [EmailModule],
+  controllers: [],
+  providers: [TasksService],
 })
 export class TasksModule {}

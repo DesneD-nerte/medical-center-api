@@ -1,9 +1,9 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
-import { NotificationDto } from "./dto/notification-dto";
+import { NotificationDto } from "../dto/notification-dto";
 
 @Injectable()
-export class TasksRepository {
+export class EmailRepository {
   constructor(private prisma: PrismaService) {}
 
   async findTomorrowRecords(): Promise<NotificationDto[]> {
@@ -27,6 +27,8 @@ export class TasksRepository {
         AND
         CURDATE() = date 
         AND
-        TIMESTAMPDIFF(HOUR,  CURRENT_TIMESTAMP(), time_from) < 2`;
+        TIMESTAMPDIFF(HOUR,  CURRENT_TIMESTAMP(), time_from) < 2
+        AND
+        TIMESTAMPDIFF(HOUR,  CURRENT_TIMESTAMP(), time_from) > 0`;
   }
 }
