@@ -37,8 +37,7 @@ export class EmailService implements NotificationService {
             currentDate: new Date().toLocaleDateString("ru-RU"),
             name: notificationRecord.name,
             spec: notificationRecord.spec,
-            time:
-              notificationRecord.time_from.getHours() + notificationRecord.time_from.getMinutes(),
+            time: `${notificationRecord.time_from.getUTCHours()}:${notificationRecord.time_from.getUTCMinutes()}`,
           },
         },
       });
