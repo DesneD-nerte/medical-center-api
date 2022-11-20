@@ -9,7 +9,6 @@ export class ScheduleService {
   constructor(private scheduleRepository: ScheduleRepository) {}
 
   async getRecords(listScheduleEntitiesDto: ListScheduleEntitiesDto) {
-    throw new Error("adqweq");
     return await this.scheduleRepository.findMany(listScheduleEntitiesDto);
   }
 

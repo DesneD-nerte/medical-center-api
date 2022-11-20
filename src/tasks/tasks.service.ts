@@ -6,7 +6,7 @@ import { EmailService } from "src/notifications/email/email.service";
 export class TasksService {
   constructor(private emailService: EmailService) {}
 
-  @Cron(CronExpression.EVERY_10_SECONDS)
+  @Cron(CronExpression.EVERY_10_MINUTES)
   async handleCron() {
     await this.emailService.send();
     // this.telegramService.send();
